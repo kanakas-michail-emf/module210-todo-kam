@@ -45,7 +45,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_GROUND_007A2C903 }}
           action: "close"
   
-  index.html_verification:
+  index_html_verification:
     runs-on: ubuntu-latest
     name: Verification existance index.html
     steps:
