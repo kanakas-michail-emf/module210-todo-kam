@@ -9,7 +9,20 @@ on:
     branches:
       - main
 
-jobs:
+jobs: # avant le build and deploy
+  index_html_verification:
+    runs-on: ubuntu-latest
+    name: Verification existance index.html
+    steps:
+      - name: test
+        run: |
+          if [ -f src/frontend/index.html ]; then
+            echo "Le fichier index.html existe"
+          else
+            echo "Erreur : index.html n’existe pas!"
+            exit 1
+          fi
+
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
@@ -44,18 +57,3 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_GROUND_007A2C903 }}
           action: "close"
-  
-  index_html_verification:
-    runs-on: ubuntu-latest
-    name: Verification existance index.html
-    steps:
-      - name: stopper workflow si fichier manquant
-        if: ${{ hashFiles('./src/frontend/index.html') == '' }} # == '' signifie rien donc absent
-        run: |
-          'echo : "Erreur : index.html n’existe pas!”'
-          exit 1
-
-      - name: validation si fichier présent
-        if: ${{ hashFiles('./src/frontend/index.html') != '' }} # == '' signifie n'est pas égal a rien, donc existant
-        run: |
-          'echo : "Le fichier index.html existe”'
