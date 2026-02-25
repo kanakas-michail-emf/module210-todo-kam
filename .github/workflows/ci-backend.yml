@@ -1,0 +1,30 @@
+name: Build and save my Docker image to a regitry
+
+on:
+  push:
+    branches:
+      - main  # Déclenchement lorsque le code est poussé sur main
+
+env:
+  REG_NAME: "acrinfofd22210.azurecr.io" # Nom du registy
+  IMAGE_NAME: "backend-app" # Nom de votre image
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REG_NAME }} # nom registry
+          username: ${{ secrets.AZURE_REGISTRY_USER }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+
+      - name: Build and Push Docker image
+        run: |
+          docker build . -t ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.REG_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
