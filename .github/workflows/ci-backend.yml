@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Déclenchement lorsque le code est poussé sur main
+    paths:
+      - 'src/backend/**' # Le workflow ne se lance que si un fichier dans le backend change
 
 env:
   REG_NAME: "acrinfofd22210.azurecr.io" # Nom du registy

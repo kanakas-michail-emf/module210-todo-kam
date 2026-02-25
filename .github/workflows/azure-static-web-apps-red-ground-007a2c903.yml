@@ -8,6 +8,8 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths:
+      - 'src/frontend/**' # Le workflow ne se lance que si un fichier dans le frontend change
 
 jobs: # avant le build and deploy
   build_and_deploy_job:
